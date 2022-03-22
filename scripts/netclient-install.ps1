@@ -45,8 +45,8 @@ new-module -name netclient-install -scriptblock {
                 Write-Host "https://github.com/gravitl/netmaker/releases/download/$version/netclient.exe";
                 $url = "https://github.com/gravitl/netmaker/releases/download/$version/netclient.exe"
                 Invoke-WebRequest -Uri $url -OutFile $outpath
-                $loc = Get-Location
-                Copy-Item -Path "$env:userprofile\Downloads\netclient.exe" -Destination "$loc\netclient.exe"
+                #$loc = Get-Location
+                #Copy-Item -Path "$env:userprofile\Downloads\netclient.exe" -Destination "$loc\netclient.exe"
             }
             $runNum = "one"
             foreach ($run in $runNum) { 
