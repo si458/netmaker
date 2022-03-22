@@ -45,23 +45,20 @@ new-module -name netclient-install -scriptblock {
                 Write-Host "https://github.com/gravitl/netmaker/releases/download/$version/netclient.exe";
                 $url = "https://github.com/gravitl/netmaker/releases/download/$version/netclient.exe"
                 Invoke-WebRequest -Uri $url -OutFile $outpath
-                #$loc = Get-Location
-                #Copy-Item -Path "$env:userprofile\Downloads\netclient.exe" -Destination "$loc\netclient.exe"
             }
             $runNum = "one"
             foreach ($run in $runNum) { 
 
                 $NetArgs = @("join","-t",$token)
                 Start-Process -Filepath $outpath -ArgumentList $NetArgs -Wait
-                #Add-MpPreference -ExclusionPath "C:\ProgramData\Netclient"
 
                 if ((Get-Command "netclient.exe" -ErrorAction SilentlyContinue) -eq $null) { 
-                    if (-not (Test-Path -Path "C:\ProgramData\Netclient\netclient.exe")) {
-                        Move-Item -Path "$env:userprofile\Downloads\netclient.exe" -Destination "C:\ProgramData\Netclient\netclient.exe"
+                    if (-not (Test-Path -Path "C:\ProgramData\Netclient\bin\netclient.exe")) {
+                        Move-Item -Path "$env:userprofile\Downloads\netclient.exe" -Destination "C:\ProgramData\Netclient\bin\netclient.exe"
                         $oldpath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path
-                        $newpath = "$oldpath;C:\ProgramData\Netclient"
+                        $newpath = "$oldpath;C:\ProgramData\Netclient\bin"
                         Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH -Value $newPath
-                        $env:Path += ";C:\ProgramData\Netclient"
+                        $env:Path += ";C:\ProgramData\Netclient\bin"
                     }
                 }
                 #if($run -eq "one"){
