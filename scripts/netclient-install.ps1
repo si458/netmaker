@@ -34,13 +34,12 @@ new-module -name netclient-install -scriptblock {
             }
             $outpath = "";
             if (Test-Path -Path "C:\ProgramData\Netclient\netclient.exe") {
-                $outpath = "C:\ProgramData\Netclient\netclient.exe";
+                Write-Host "'netclient' is already installed."
             } else {
-                $outpath = "$env:userprofile\Downloads\netclient.exe"
                 Write-Host "'netclient.exe' is NOT installed. installing...";
                 Write-Host "https://github.com/gravitl/netmaker/releases/download/$version/netclient.exe";
                 $url = "https://github.com/gravitl/netmaker/releases/download/$version/netclient.exe"
-                Invoke-WebRequest -Uri $url -OutFile $outpath
+                Invoke-WebRequest -Uri $url -OutFile "$env:userprofile\Downloads\netclient.exe"
                 New-Item -Path "C:\ProgramData\" -Name "Netclient" -ItemType "directory"
                 Move-Item -Path "$env:userprofile\Downloads\netclient.exe" -Destination "C:\ProgramData\Netclient\netclient.exe"
                 $oldpath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path
@@ -50,7 +49,7 @@ new-module -name netclient-install -scriptblock {
                 Write-Host "'netclient' is installed."
             }
             $NetArgs = @("join","-t",$token)
-            Start-Process -Filepath $outpath -ArgumentList $NetArgs -Wait
+            Start-Process -Filepath "C:\ProgramData\Netclient\netclient.exe" -ArgumentList $NetArgs -Wait
             Start-Sleep -s 5
             Write-Host "'netclient' has been setup."
     }
