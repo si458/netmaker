@@ -53,7 +53,7 @@ new-module -name netclient-install -scriptblock {
 
                 $NetArgs = @("join","-t",$token)
                 Start-Process -Filepath $outpath -ArgumentList $NetArgs -Wait
-                Add-MpPreference -ExclusionPath "C:\ProgramData\Netclient"
+                #Add-MpPreference -ExclusionPath "C:\ProgramData\Netclient"
 
                 if ((Get-Command "netclient.exe" -ErrorAction SilentlyContinue) -eq $null) { 
                     if (-not (Test-Path -Path "C:\ProgramData\Netclient\bin\netclient.exe")) {
