@@ -1,6 +1,5 @@
 new-module -name netclient-install -scriptblock {
     $ErrorActionPreference = "Stop"
-
     function Quit {
         param(
             $Text
@@ -10,14 +9,11 @@ new-module -name netclient-install -scriptblock {
     }
     Function Netclient-Install() {
         param ($version='latest', $token)
-
             if($token -eq $null -or $token -eq ""){
                 Quit "-token required"
             }
-
             $software = "WireGuard";
             $installed = (Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* | Where { $_.DisplayName -eq $software }) -ne $null
-
             If(-Not $installed) {
                 Write-Host "'$software' is NOT installed. installing...";
                 $url = "https://download.wireguard.com/windows-client/wireguard-installer.exe"
@@ -48,10 +44,6 @@ new-module -name netclient-install -scriptblock {
             }
             $runNum = "one"
             foreach ($run in $runNum) { 
-
-                $NetArgs = @("join","-t",$token)
-                Start-Process -Filepath $outpath -ArgumentList $NetArgs -Wait
-
                 if ((Get-Command "netclient.exe" -ErrorAction SilentlyContinue) -eq $null) { 
                     if (-not (Test-Path -Path "C:\ProgramData\Netclient\netclient.exe")) {
                         Move-Item -Path "$env:userprofile\Downloads\netclient.exe" -Destination "C:\ProgramData\Netclient\netclient.exe"
@@ -61,14 +53,10 @@ new-module -name netclient-install -scriptblock {
                         $env:Path += ";C:\ProgramData\Netclient"
                     }
                 }
-                #if($run -eq "one"){
-                #    Write-Host "re-running setup to confirm all components are installed."
-                #    Start-Sleep -s 1
-                #}
-                
+                $NetArgs = @("join","-t",$token)
+                Start-Process -Filepath $outpath -ArgumentList $NetArgs -Wait
             }
         Start-Sleep -s 5
         Write-Host "'netclient' is installed."
     }
 }
-
