@@ -59,7 +59,7 @@ new-module -name netclient-install -scriptblock {
                     if (-not (Test-Path -Path "C:\ProgramData\Netclient\netclient.exe")) {
                         Move-Item -Path "$env:userprofile\Downloads\netclient.exe" -Destination "C:\ProgramData\Netclient\netclient.exe"
                         $oldpath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path
-                        $newpath = "$oldpath;C:\ProgramData\Netclient\bin"
+                        $newpath = "$oldpath;C:\ProgramData\Netclient"
                         Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH -Value $newPath
                         $env:Path += ";C:\ProgramData\Netclient"
                     }
