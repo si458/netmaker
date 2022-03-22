@@ -17,8 +17,7 @@ new-module -name netclient-install -scriptblock {
             If(-Not $installed) {
                 Write-Host "'$software' is NOT installed. installing...";
                 $url = "https://download.wireguard.com/windows-client/wireguard-installer.exe"
-                $outpath = "$env:userprofile\Downloads\wireguard-installer.exe"
-                Invoke-WebRequest -Uri $url -OutFile $outpath
+                Invoke-WebRequest -Uri $url -OutFile "$env:userprofile\Downloads\wireguard-installer.exe"
                 $args = @("Comma","Separated","Arguments")
                 Start-Process -Filepath "$env:userprofile\Downloads\wireguard-installer.exe" -ArgumentList $args -Wait
                 $software = "WireGuard";
@@ -32,7 +31,6 @@ new-module -name netclient-install -scriptblock {
             } else {
                 Write-Host "'$software' is installed."
             }
-            $outpath = "";
             if (Test-Path -Path "C:\ProgramData\Netclient\netclient.exe") {
                 Write-Host "'netclient' is already installed."
             } else {
